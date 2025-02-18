@@ -5,7 +5,7 @@ import { viteSingleFile } from 'vite-plugin-singlefile';
 // This config is used to build the web editor into a single file
 
 export default defineConfig({
-  root: 'src/editor-web', // This should be the directory of your index.html
+  root: 'components/editor', // This should be the directory of your index.html
   build: {
     outDir: 'build',
   },

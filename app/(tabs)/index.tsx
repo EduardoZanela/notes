@@ -1,8 +1,9 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, FlatList, StyleSheet, Pressable } from "react-native";
+import { View, Text, TextInput, Button, FlatList, StyleSheet, Pressable, SafeAreaView, KeyboardAvoidingView, Platform } from "react-native";
 import FloatingButton from "../../components/floating_button";
-import MarkdownEditor from "../../components/markdown_editor";
+import { RichText, TenTapStartKit, Toolbar, useEditorBridge } from "@10play/tentap-editor";
+import { editorHtml } from "../../components/editor/build/editorHtml";
 
 const HomeScreen = () => {
   const [tasks, setTasks] = useState<{ id: string; text: string }[]>([]);
@@ -15,20 +16,28 @@ const HomeScreen = () => {
     }
   };
 
+  const editor = useEditorBridge({
+    customSource: editorHtml,
+    bridgeExtensions: [...TenTapStartKit],
+    autofocus: true,
+    avoidIosKeyboard: true,
+    initialContent: 'Start editing!',
+  });
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>To-Do List</Text>
-      <FlatList
-        data={tasks}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => 
-          <Pressable onPress={() => router.push({pathname: "notes/[id]", params: { id: item.id }})}>
-            <Text style={styles.task}>{item.text}</Text>
-          </Pressable> 
-        }
-      />
-      <FloatingButton onPress={() => { router.push("/editor") }} />
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <RichText editor={editor} />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          bottom: 0,
+        }}
+      >
+        <Toolbar editor={editor} hidden={false} />
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
