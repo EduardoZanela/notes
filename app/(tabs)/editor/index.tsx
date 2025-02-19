@@ -1,28 +1,25 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, SafeAreaView  } from "react-native";
 import WebView from "react-native-webview"
 import htmlString from "../../../lexical-editor/dist/htmlString";
 
 const Editor = () => {
   return (
-    <View style={styles.container}>
-      <View style={{ width: "100%", height: "80%" }}>
-        <Text>Lexical Webview</Text>
-        <WebView
+    <SafeAreaView style={styles.container}>
+        <WebView styles={styles.webView}
           source={{ html: htmlString }}
-          style={{ marginTop: 20 }}
         />
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#e0e0e0",
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1
   },
+  webView: {
+    width: "100%", 
+    height: "100%"
+  }
 });
 
 export default Editor;

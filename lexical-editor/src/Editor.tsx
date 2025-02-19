@@ -1,25 +1,34 @@
-import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import './Editor.css';
-
-import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
-
-const placeholder = 'Enter some rich text...';
+import EditorTheme from './EditorTheme';
 
 function onError(error: unknown) {
-    console.error(error);
+  console.error(error);
 }
 
 export function Editor() {
-    const editorConfig = {
-        namespace: 'editor',
-        onError,
-    }
+  const initialConfig = {
+    namespace: 'MyEditor',
+    theme: EditorTheme,
+    onError
+  };
 
-    return (
-       <p>blabla</p>
-    );
+  return (
+    <LexicalComposer initialConfig={initialConfig}>
+      <div className="editor-container">
+        <div className="editor-inner">
+          <RichTextPlugin
+            contentEditable={<ContentEditable className="editor-input" />}
+            placeholder={<div className="editor-placeholder">Enter some text...</div>}
+            ErrorBoundary={LexicalErrorBoundary}
+          />
+          <HistoryPlugin />
+        </div>
+      </div>
+    </LexicalComposer>
+  );
 }
