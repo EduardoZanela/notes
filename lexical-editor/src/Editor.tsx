@@ -1,8 +1,9 @@
-import {AutoFocusPlugin} from '@lexical/react/LexicalAutoFocusPlugin';
-import {LexicalComposer} from '@lexical/react/LexicalComposer';
-import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
-import {ContentEditable} from '@lexical/react/LexicalContentEditable';
-import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
+import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import './Editor.css';
 
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 
@@ -16,24 +17,9 @@ export function Editor() {
     const editorConfig = {
         namespace: 'editor',
         onError,
-      }
+    }
 
     return (
-        <LexicalComposer initialConfig={editorConfig} >
-           <RichTextPlugin
-            contentEditable={
-                <ContentEditable
-                    className="editor-input"
-                    aria-placeholder={placeholder}
-                    placeholder={
-                    <div className="editor-placeholder">{placeholder}</div>
-                    }
-                />
-                }
-                ErrorBoundary={LexicalErrorBoundary}
-            />
-            <HistoryPlugin />
-            <AutoFocusPlugin />
-        </LexicalComposer>
+       <p>blabla</p>
     );
 }
