@@ -1,6 +1,6 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useEffect } from 'react';
-import { EditorBridge, EditorPostMessageSchema } from '../../../components/EditorBridge';
+import { EditorBridge, EditorPostMessageSchema } from '@notes/components/EditorBridge';
 import { linkBridge } from "@webview-bridge/web";
 import  {
     FORMAT_TEXT_COMMAND

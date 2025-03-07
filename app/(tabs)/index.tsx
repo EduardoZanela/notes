@@ -1,8 +1,7 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, FlatList, StyleSheet, Pressable } from "react-native";
-import FloatingButton from "../../components/floating_button";
-import MarkdownEditor from "../../components/markdown_editor";
+import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
+import FloatingButton from "@notes/components/floating_button";
 
 const HomeScreen = () => {
   const [tasks, setTasks] = useState<{ id: string; text: string }[]>([]);

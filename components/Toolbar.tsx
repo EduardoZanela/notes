@@ -7,7 +7,7 @@ import {
     faUnderline,
     faStrikethrough
 } from '@fortawesome/free-solid-svg-icons'
-import { postMessage, EditorFormatSchema } from "./EditorBridge";
+import { postMessage, EditorFormatSchema } from "@notes/components/EditorBridge";
 import { z } from "zod";
 
 //const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
