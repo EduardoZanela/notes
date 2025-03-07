@@ -52,6 +52,10 @@ p {
   .editor-text-underlineStrikethrough {
     text-decoration: underline line-through;
   }
+
+  .editor-text-code {
+    background-color: #999;
+  }
   
   .toolbar {
     display: flex;

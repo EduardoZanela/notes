@@ -1,9 +1,18 @@
 import {View, StyleSheet, TouchableOpacity, Text} from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faBold, faItalic, faCode } from '@fortawesome/free-solid-svg-icons'
+import { 
+    faBold, 
+    faItalic, 
+    faCode,
+    faUnderline,
+    faStrikethrough
+} from '@fortawesome/free-solid-svg-icons'
 import { postMessage, EditorFormatSchema } from "./EditorBridge";
+import { z } from "zod";
 
-const toolbarItems = [
+//const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
+
+export const DEFAULT_ITEMS = [
     {
         command: 'bold',
         icon: faBold
@@ -13,18 +22,30 @@ const toolbarItems = [
         icon: faItalic
     },
     {
-        id: 2,
+        command: 'underline',
+        icon: faUnderline
+    },
+    {
+        command: 'strikethrough',
+        icon: faStrikethrough
+    },
+    {
         command: 'code',
         icon: faCode
     }
 ]
 
-/* TODO 
-    - Code needs a gray background
-    - Add more toolbar items
-    - Add custom Toolbar items from who is importing the Toolbar component
-*/
-export const Toolbar = ({items = toolbarItems}) => {
+// Define the Zod schema for props validation
+const itemsSchema = z.array(
+    z.object({
+        command: z.string(),
+        icon: z.any(),
+    }).optional()
+);
+
+export const Toolbar = ({items = DEFAULT_ITEMS}) => {
+    
+    itemsSchema.parse(items);
 
     return (
         <View style={styles.toolbarContainer}>
