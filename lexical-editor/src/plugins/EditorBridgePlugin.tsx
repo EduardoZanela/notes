@@ -14,6 +14,7 @@ export function EditorBridgePlugin() {
 
     useEffect(() => {
         return bridge.addEventListener('formatElementEvent', (payload) => {
+            console.log("test");
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, payload);
         });
     }, []);

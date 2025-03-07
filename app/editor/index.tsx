@@ -1,9 +1,8 @@
 import { StyleSheet, View, SafeAreaView  } from "react-native";
 import htmlString from "../../lexical-editor/dist/htmlString";
-import { WebView, postMessage } from "../../components/EditorBridge";
+import { WebView } from "../../components/EditorBridge";
 import React from "react";
 import { BridgeWebView } from "@webview-bridge/react-native";
-import { Button } from "react-native";
 import { KeyboardAwareScrollView, KeyboardProvider } from "react-native-keyboard-controller";
 import { Toolbar } from "../../components/Toolbar";
 

@@ -6,7 +6,7 @@ import { createWebView } from "@webview-bridge/react-native";
 import { z } from "zod";
 
 const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
-const EditorFormatSchema = z.enum(FormatOptions);
+export const EditorFormatSchema = z.enum(FormatOptions);
 
 export const editorBridge = bridge({
   async getMessage() {
