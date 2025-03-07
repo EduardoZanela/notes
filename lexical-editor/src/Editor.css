@@ -54,7 +54,10 @@ p {
   }
 
   .editor-text-code {
-    background-color: #999;
+    background-color: #f0f2f5;
+    padding: 1px .25rem;
+    font-family: Menlo, Consolas, Monaco, monospace;
+    font-size: 94%;
   }
   
   .toolbar {

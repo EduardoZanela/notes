@@ -8,10 +8,10 @@ module.exports = function (api) {
           {
             root: ["./"],
             alias: {
-              "@notes": "./",
+              "@components": "./components"
             },
           },
         ],
       ],
     };
-  };
+  }; 

@@ -7,7 +7,7 @@ import {
     faUnderline,
     faStrikethrough
 } from '@fortawesome/free-solid-svg-icons'
-import { postMessage, EditorFormatSchema } from "@notes/components/EditorBridge";
+import { postMessage, EditorFormatSchema } from "@components/EditorBridge";
 import { z } from "zod";
 
 //const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
@@ -51,12 +51,12 @@ export const Toolbar = ({items = DEFAULT_ITEMS}) => {
         <View style={styles.toolbarContainer}>
             {/* Toolbar content */}            
             {items.map((item) => (
-                <TouchableOpacity onPress={() => { postMessage('formatElementEvent',  EditorFormatSchema.parse(item.command) ) }}>
+                <TouchableOpacity key={item.command} onPress={() => { postMessage('formatElementEvent',  EditorFormatSchema.parse(item.command) ) }}>
                     <View style={styles.touchableBg}>
                         <FontAwesomeIcon
                             icon={item.icon}
                             style={styles.btnEnabled}
-                            size={16}
+                            size={15}
                         />
                     </View>            
                 </TouchableOpacity>
@@ -72,10 +72,20 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: "#f5f5f5",
         borderBottomWidth: 1,
-        borderBottomColor: "#e0e0e0"
+        borderBottomColor: "#e0e0e0",
+        elevation: 10,
+        borderTopLeftRadius: 5,  // Round top-left corner
+        borderTopRightRadius: 5, // Round top-right corner
+        shadowColor: '#000', // iOS
+        shadowOffset: { width: 0, height: 10 }, // iOS
+        shadowOpacity: 0.1, // iOS
+        shadowRadius: 20, // iOS
     },
     touchableBg: {
-        padding: 4,
+        paddingTop: 5,
+        paddingBottom: 5,
+        paddingRight: 10,
+        paddingLeft: 10,
       },
     touchableBgActive: {
         padding: 4,
