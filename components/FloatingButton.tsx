@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Import icon
 
-const FloatingButton = ({ onPress }) => {
+export const FloatingButton = ({ onPress }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.fab} onPress={onPress}>
@@ -33,5 +33,3 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
 });
-
-export default FloatingButton;
