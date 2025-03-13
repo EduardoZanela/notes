@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import { View, FlatList, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Card, Menu, IconButton } from "react-native-paper";
+import { getAllNotes } from "../../services/databaseService";
+import { Note } from "../../db/NotesDatabase";
 
 const generateRandomPastel = () => {
   const hue = Math.floor(Math.random() * 360);
   return `hsl(${hue}, 70%, 85%)`; // Soft pastel colors
 };
 
+
 const NotesList = () => {
-  const [notes, setNotes] = useState([
-    { id: "1", title: "Shopping List", text: "Milk, eggs, bread, and cheese." },
-    { id: "2", title: "Work Tasks", text: "Finish project report, send emails, and call clients." },
-    { id: "3", title: "Ideas", text: "A new app idea that connects freelancers to local clients." },
-  ]);
+  
+  const [notes, setNotes] = useState<Note[]>();
+  getAllNotes().then((notes) => {
+    setNotes(notes);
+  }
+  );
+  
   const [menuVisible, setMenuVisible] = useState(null);
 
   const toggleMenu = (id) => {
@@ -31,31 +36,7 @@ const NotesList = () => {
               <Card.Content>
                 <View style={styles.cardHeader}>
                   <Text style={styles.title}>{item.title}</Text>
-
-                  {/* Menu Button with Ice-Colored Circle */}
-                  <View style={styles.menuWrapper}>
-                    <View style={styles.iceCircle} />
-                    <Menu
-                      visible={menuVisible === item.id}
-                      onDismiss={() => setMenuVisible(null)}
-                      anchor={
-                        <IconButton
-                          icon="dots-vertical"
-                          size={20}
-                          onPress={() => toggleMenu(item.id)}
-                        />
-                      }
-                    >
-                      <Menu.Item onPress={() => console.log("Edit", item.id)} title="Edit" />
-                      <Menu.Item onPress={() => console.log("Delete", item.id)} title="Delete" />
-                      <Menu.Item onPress={() => console.log("Share", item.id)} title="Share" />
-                    </Menu>
-                  </View>
                 </View>
-
-                <Text style={styles.text}>
-                  {item.text.length > 140 ? item.text.substring(0, 140) + "..." : item.text}
-                </Text>
               </Card.Content>
             </Card>
           );

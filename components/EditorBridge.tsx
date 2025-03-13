@@ -3,14 +3,36 @@ import {
     postMessageSchema,
 } from "@webview-bridge/react-native";
 import { createWebView } from "@webview-bridge/react-native";
+import { OnChangePayload } from "../shared/types";
 import { z } from "zod";
+import { useState } from "react";
+import { addNote, updateNote } from "../services/databaseService";
 
 const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
 export const EditorFormatSchema = z.enum(FormatOptions);
 
+const [currentId, setCurrentId] = useState<number | null>(null);
+
 export const editorBridge = bridge({
-  async getMessage() {
-    return "I'm from native" as const;
+  async changeNotification(payload: OnChangePayload) {
+    //console.log('Native change side ', payload);
+    if(currentId == null) {
+      addNote({
+        title: payload.titleText || "",
+        content: payload.plainText || "",
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      }).then((id) => {
+        setCurrentId(id);
+      })
+    } else {
+      updateNote(currentId, {
+        title: payload.titleText || "",
+        content: payload.plainText || "",
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      });
+    }
   }
 });
 

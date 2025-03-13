@@ -9,3 +9,16 @@ TODO
     - Use state to store the ID for current note and decide to create new or only update
 
 - Look chat gpt topics
+
+
+
+// When doing the toolbar state, can use this code to get if current node is bold and change the toolbar bold button style 
+const selection = $getSelection()
+ editorState.read(() => {
+    if ($isRangeSelection(selection)) {
+        console.log(selection?.hasFormat('bold'));
+    }
+
+    const node = selection?.getNodes()[0]
+    console.log(node);
+});

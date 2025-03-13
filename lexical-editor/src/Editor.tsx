@@ -2,11 +2,11 @@ import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
-import { EditorBridgePlugin } from './plugins/EditorBridgePlugin';
+import { EditorBridgePlugin, onLexicalEditorChange } from './plugins/EditorBridgePlugin';
 import './Editor.css';
 import EditorTheme from './EditorTheme';
-
 
 function onError(error: unknown) {
   console.error(error);
@@ -30,6 +30,7 @@ export function Editor() {
             ErrorBoundary={LexicalErrorBoundary}
           />
           <HistoryPlugin />
+          <OnChangePlugin onChange={onLexicalEditorChange} />
         </div>
       </div>
     </LexicalComposer>

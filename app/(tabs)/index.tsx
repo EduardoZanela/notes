@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
-import { FloatingButton } from "@components/FloatingButton";
+import { FloatingButton } from "../../components/FloatingButton";
 
 const HomeScreen = () => {
   const [tasks, setTasks] = useState<{ id: string; text: string }[]>([]);
