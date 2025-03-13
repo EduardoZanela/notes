@@ -6,7 +6,7 @@ import { createWebView } from "@webview-bridge/react-native";
 import { OnChangePayload } from "../shared/types";
 import { z } from "zod";
 import { useState } from "react";
-import { addNote, updateNote } from "../services/databaseService";
+import { addNote, updateNote } from "../services/NotesDBService";
 
 const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
 export const EditorFormatSchema = z.enum(FormatOptions);
@@ -23,7 +23,9 @@ export const editorBridge = bridge({
         createdAt: Date.now(),
         updatedAt: Date.now()
       }).then((id) => {
-        setCurrentId(id);
+        if(id) {
+          setCurrentId(id);
+        }
       })
     } else {
       updateNote(currentId, {

@@ -17,10 +17,7 @@ const bridge = linkBridge<EditorBridge, EditorPostMessageSchema>({
 export function onLexicalEditorChange(editorState: EditorState, _latestEditor: LexicalEditor, _tags: Set<string>) {
     if (bridge) { // && bridgeReady
         editorState.read(() => {
-            let titleText : string = "";
-            if ($getRoot().getAllTextNodes().length > 0) {
-                titleText = $getRoot().getAllTextNodes()[0].getTextContent();
-            }
+            const titleText: string = $getRoot().getAllTextNodes()?.[0].getTextContent();
             const plainText: string = $getRoot().getTextContent();
             const jsonState: string = JSON.stringify(editorState.toJSON())
             const payload: OnChangePayload = {

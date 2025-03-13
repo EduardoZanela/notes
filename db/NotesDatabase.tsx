@@ -9,12 +9,10 @@ export type Note = {
     updatedAt: number;
 }
 
-export const db = new Dexie("NotesDatabase") as Dexie & {
+export const notesDatabase = new Dexie("NotesDatabase") as Dexie & {
     notes: EntityTable<Note, 'id'>;
 };
 
-db.version(1).stores({
+notesDatabase.version(1).stores({
     notes: '++id, title, content, tags, created_at, updated_at'
 });
-
-export type NotesDatabase = typeof db ;

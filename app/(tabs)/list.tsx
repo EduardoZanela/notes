@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, FlatList, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Card, Menu, IconButton } from "react-native-paper";
-import { getAllNotes } from "../../services/databaseService";
+import { getAllNotes } from "../../services/NotesDBService";
 import { Note } from "../../db/NotesDatabase";
 
 const generateRandomPastel = () => {
