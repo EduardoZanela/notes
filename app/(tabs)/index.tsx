@@ -1,31 +1,13 @@
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 import { FloatingButton } from "../../components/FloatingButton";
 
 const HomeScreen = () => {
-  const [tasks, setTasks] = useState<{ id: string; text: string }[]>([]);
-  const [input, setInput] = useState("");
-
-  const addTask = () => {
-    if (input.trim()) {
-      setTasks([...tasks, { id: Date.now().toString(), text: input }]);
-      setInput("");
-    }
-  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>To-Do List</Text>
-      <FlatList
-        data={tasks}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => 
-          <Pressable onPress={() => router.push({pathname: "notes/[id]", params: { id: item.id }})}>
-            <Text style={styles.task}>{item.text}</Text>
-          </Pressable> 
-        }
-      />
       <FloatingButton onPress={() => { router.push("/editor") }} />
     </View>
   );
