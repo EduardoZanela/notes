@@ -2,7 +2,7 @@ import { StyleSheet, View, SafeAreaView  } from "react-native";
 import htmlString from "../../lexical-editor/dist/htmlString";
 import { WebView } from "../../components/EditorBridge";
 import { useRef } from "react";
-import { BridgeWebView } from "@webview-bridge/react-native";
+import { type BridgeWebView } from "@webview-bridge/react-native";
 import { KeyboardAwareScrollView, KeyboardProvider } from "react-native-keyboard-controller";
 import { Toolbar } from "../../components/Toolbar";
 
@@ -15,6 +15,8 @@ const Editor = () => {
         <KeyboardAwareScrollView bottomOffset={62} contentContainerStyle={{flex: 1}}>
           <WebView
             ref={webviewRef}
+            hideKeyboardAccessoryView={true}
+            originWhitelist={['*']}
             style={styles.webView}
             source={{ html: htmlString }}
           />

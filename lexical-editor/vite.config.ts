@@ -3,7 +3,6 @@ import fs from "fs";
 import { defineConfig } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
 import react from "@vitejs/plugin-react";
-import tsPlugin from 'vite-plugin-ts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,7 +14,6 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    tsPlugin(),
     viteSingleFile(),
     {
       name: "vite-plugin-html-string",

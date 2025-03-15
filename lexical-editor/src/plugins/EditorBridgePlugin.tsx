@@ -1,6 +1,5 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useEffect } from 'react';
-import { EditorBridge, EditorPostMessageSchema } from '../../../components/EditorBridge';
 import { linkBridge } from "@webview-bridge/web";
 import  {
     FORMAT_TEXT_COMMAND,
@@ -8,37 +7,29 @@ import  {
     LexicalEditor,
     $getRoot
 } from 'lexical'
-import { OnChangePayload } from '../../../shared/types';
+import OnChangePayload from '../../../types/OnChangePayload';
 
-const bridge = linkBridge<EditorBridge, EditorPostMessageSchema>({
-    throwOnError: true
-});
 
 export function onLexicalEditorChange(editorState: EditorState, _latestEditor: LexicalEditor, _tags: Set<string>) {
-    if (bridge) { // && bridgeReady
-        editorState.read(() => {
-            const titleText: string = $getRoot().getAllTextNodes()?.[0].getTextContent();
-            const plainText: string = $getRoot().getTextContent();
-            const jsonState: string = JSON.stringify(editorState.toJSON())
-            const payload: OnChangePayload = {
-                ...(plainText && { plainText }),
-                ...(titleText && { titleText }),
-                ...(jsonState && { jsonState })
-            };
-            (async function () {
-                await bridge.changeNotification(payload);
-            })().catch();
-        });
-    }
+    editorState.read(() => {
+        const titleText: string = $getRoot().getAllTextNodes()?.[0].getTextContent();
+        const plainText: string = $getRoot().getTextContent();
+        const jsonState: string = JSON.stringify(editorState.toJSON())
+        const payload: OnChangePayload = {
+            ...(plainText && { plainText }),
+            ...(titleText && { titleText }),
+            ...(jsonState && { jsonState })
+        };
+    });
 }
 
 export function EditorBridgePlugin() {
     const [editor] = useLexicalComposerContext();
 
     useEffect(() => {
-        return bridge.addEventListener('formatElementEvent', (payload) => {
-            editor.dispatchCommand(FORMAT_TEXT_COMMAND, payload);
-        });
+        // return window. .addEventListener('formatElementEvent', (payload) => {
+        //     editor.dispatchCommand(FORMAT_TEXT_COMMAND, payload);
+        // });
     }, []);
 
     return null;

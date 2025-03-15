@@ -4,8 +4,6 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import LokiJSAdapter from '@nozbe/watermelondb/adapters/lokijs';
 import { Platform } from 'react-native';
 import Note from '../models/Note';
-import NoteTag from '../models/NoteTag';
-import Tag from '../models/Tag';
 
 const schema = appSchema({
     version: 1,
@@ -17,19 +15,6 @@ const schema = appSchema({
                 { name: 'content', type: 'string' },
                 { name: 'created_at', type: 'number' },
                 { name: 'updated_at', type: 'number' },
-            ]
-        }),
-        tableSchema({
-            name: 'tags',
-            columns: [
-                { name: 'name', type: 'string' },
-            ] 
-        }),
-        tableSchema({
-            name: 'note_tags',
-            columns: [
-                { name: 'note_id', type: 'string', isIndexed: true },
-                { name: 'tag_id', type: 'string', isIndexed: true },
             ]
         })
     ]
@@ -77,5 +62,5 @@ const adapter = Platform.OS === 'web' ? new LokiJSAdapter({
 
 export const database = new Database({
     adapter,
-    modelClasses: [Note, NoteTag, Tag],
+    modelClasses: [Note],
 });
