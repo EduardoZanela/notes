@@ -1,6 +1,7 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useEffect } from 'react';
-import { linkBridge } from "@webview-bridge/web";
+import { useRHHandler } from './Events'
+import { ACTIONS } from '../../../types/Events'
+
 import  {
     FORMAT_TEXT_COMMAND,
     EditorState,
@@ -8,7 +9,6 @@ import  {
     $getRoot
 } from 'lexical'
 import OnChangePayload from '../../../types/OnChangePayload';
-
 
 export function onLexicalEditorChange(editorState: EditorState, _latestEditor: LexicalEditor, _tags: Set<string>) {
     editorState.read(() => {
@@ -20,17 +20,16 @@ export function onLexicalEditorChange(editorState: EditorState, _latestEditor: L
             ...(titleText && { titleText }),
             ...(jsonState && { jsonState })
         };
+        window.ReactNativeWebView?.postMessage(ACTIONS.NOTIFY_STATE_CHANGE_RN, payload);
     });
 }
 
 export function EditorBridgePlugin() {
     const [editor] = useLexicalComposerContext();
 
-    useEffect(() => {
-        // return window. .addEventListener('formatElementEvent', (payload) => {
-        //     editor.dispatchCommand(FORMAT_TEXT_COMMAND, payload);
-        // });
-    }, []);
-
+    useRHHandler(ACTIONS.FORMAT_ELEMENT_EVENT_WEB, (payload) => {
+        editor.dispatchCommand(FORMAT_TEXT_COMMAND, payload.command);
+    });
+    
     return null;
 }

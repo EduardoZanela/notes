@@ -7,10 +7,9 @@ import {
     faUnderline,
     faStrikethrough
 } from '@fortawesome/free-solid-svg-icons'
-import { postMessage, EditorFormatSchema } from "./EditorBridge";
 import { z } from "zod";
-
-//const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
+import { postMessageToWebApp } from "./EditorBridge";
+import { ACTIONS } from "../types/Events";
 
 export const DEFAULT_ITEMS = [
     {
@@ -51,7 +50,7 @@ export const Toolbar = ({items = DEFAULT_ITEMS}) => {
         <View style={styles.toolbarContainer}>
             {/* Toolbar content */}            
             {items.map((item) => (
-                <TouchableOpacity key={item.command} onPress={() => { postMessage('formatElementEvent',  EditorFormatSchema.parse(item.command) ) }}>
+                <TouchableOpacity key={item.command} onPress={() => { postMessageToWebApp({ action: ACTIONS.FORMAT_ELEMENT_EVENT_WEB, payload: { command: item.command } }) }} >
                     <View style={styles.touchableBg}>
                         <FontAwesomeIcon
                             icon={item.icon}

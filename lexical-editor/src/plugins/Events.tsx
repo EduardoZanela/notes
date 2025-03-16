@@ -1,22 +1,29 @@
 import EventEmitter from "events";
 import { useEffect } from "react";
+import { EventSchema, type ActionType, type EventPaylod } from "../../../types/Events";
+import { z } from "zod";
 
 const RNEvents = new EventEmitter();
 
-export const registerRNHandler = (action: string, handler: (payload: any) => void) => {
+export const registerRNHandler = (action: ActionType, handler: (payload: any) => void) => {
     RNEvents.on(action, handler);
-    return () => RNEvents.off(action, handler);
+    return () => { RNEvents.off(action, handler); };
 }
 
-export const useRHHandler = (action: string, handler: (payload: any) => void) => {
+export const useRHHandler = (action: ActionType, handler: (payload: any) => void) => {
     useEffect(() => {
         const deregister = registerRNHandler(action, handler);
-        return () => { deregister() };
+        return () => { deregister(); };
     }, [action, handler]);
 }
 
 const onMessageFromRN = (message: string) => {
-    const { action, payload } = JSON.parse(message);
+    const result = EventSchema.safeParse(message);
+    if (!result.success) {
+        console.error('Invalid event structure:', result.error.format());
+        return;
+    }
+    const { action, payload } = result.data;
     RNEvents.emit(action, payload);
 }
 

@@ -1,53 +1,21 @@
-import {
-    bridge,
-    postMessageSchema,
-    createWebView, 
-    type Bridge
-} from "@webview-bridge/react-native";
 import { z } from "zod";
-//import { getAllNotes } from "../services/NotesDBService";
-import { OnChangePayload } from "../types/types";
+import { getAllNotes } from "../services/NotesDBService";
+import OnChangePayload from "../types/OnChangePayload";
+import { ActionType, EventPaylod } from "../types/Events";
+import { useRef } from "react";
+import WebView from "react-native-webview";
 
 const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
-export const EditorFormatSchema = z.enum(FormatOptions);
 
-interface AppBridgeState extends Bridge {
-  currentNoteId: string;
-  setCurrentId(id: string): Promise<void>;
-  changeNotification(payload: OnChangePayload): Promise<void>;
+export const webViewRef = useRef<WebView | null>(null);
+
+export const postMessageToWebApp = (payload: EventPaylod) => {
+  webViewRef.current?.injectJavaScript(buildMessageJavaScript(payload));
+}
+
+const buildMessageJavaScript = (data: EventPaylod) => {
+  const message = JSON.stringify({ data });
+  // Stringify the message a second time to escape quotes etc.
+  const safeString = JSON.stringify(message);
+  return `window.onMessageFromRN(${safeString});`;
 };
-
-export const editorBridge = bridge({
-  currentNoteId: "",
-  async setCurrentId(id: string) {
-    console.log("setting current id ", id);
-    //set({currentNoteId: id});
-  },
-  async changeNotification(payload: OnChangePayload) {
-    // const id = await autoSaveNote("", {
-    //   title: payload.titleText!,
-    //   content: payload.jsonState!
-    // } );
-    // this.setCurrentId(id);
-    //const allNotes = await getAllNotes();
-    //console.log("allNotes ", allNotes);
-    console.log("payload ", payload);
-  },
-});
-
-const editorSchema = postMessageSchema({
-    formatElementEvent: {
-        validate: (value) => {
-            return EditorFormatSchema.parse(value);
-        },
-    }
-});
-
-export const { WebView, postMessage } = createWebView({
-    bridge: editorBridge,
-    postMessageSchema: editorSchema,
-    debug: true
-});
-
-export type EditorBridge = typeof editorBridge;
-export type EditorPostMessageSchema = typeof editorSchema;

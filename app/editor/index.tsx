@@ -1,20 +1,19 @@
 import { StyleSheet, View, SafeAreaView  } from "react-native";
 import htmlString from "../../lexical-editor/dist/htmlString";
-import { WebView } from "../../components/EditorBridge";
+import { WebView } from "react-native-webview";
 import { useRef } from "react";
-import { type BridgeWebView } from "@webview-bridge/react-native";
 import { KeyboardAwareScrollView, KeyboardProvider } from "react-native-keyboard-controller";
 import { Toolbar } from "../../components/Toolbar";
+import { webViewRef } from "../../components/EditorBridge";
 
 const Editor = () => {
-  const webviewRef = useRef<BridgeWebView>(null);
-
+  
   return (
     <KeyboardProvider>
       <SafeAreaView style={styles.container}>
         <KeyboardAwareScrollView bottomOffset={62} contentContainerStyle={{flex: 1}}>
           <WebView
-            ref={webviewRef}
+            ref={webViewRef}
             hideKeyboardAccessoryView={true}
             originWhitelist={['*']}
             style={styles.webView}
