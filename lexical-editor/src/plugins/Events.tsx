@@ -1,7 +1,6 @@
 import EventEmitter from "events";
 import { useEffect } from "react";
-import { EventSchema, type ActionType, type EventPaylod } from "../../../types/Events";
-import { z } from "zod";
+import { EventSchema, type ActionType } from "../../../types/Events";
 
 const RNEvents = new EventEmitter();
 

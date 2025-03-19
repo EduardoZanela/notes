@@ -1,4 +1,5 @@
-import {View, StyleSheet, TouchableOpacity, Text} from "react-native";
+import { MutableRefObject } from 'react';
+import {View, StyleSheet, TouchableOpacity, Text, } from "react-native";
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { 
     faBold, 
@@ -10,6 +11,7 @@ import {
 import { z } from "zod";
 import { postMessageToWebApp } from "./EditorBridge";
 import { ACTIONS } from "../types/Events";
+import WebView from "react-native-webview";
 
 export const DEFAULT_ITEMS = [
     {
@@ -42,15 +44,14 @@ const itemsSchema = z.array(
     }).optional()
 );
 
-export const Toolbar = ({items = DEFAULT_ITEMS}) => {
-    
+export const Toolbar = ({items = DEFAULT_ITEMS, ref}: { items?: typeof DEFAULT_ITEMS, ref: MutableRefObject<WebView | null> }) => {
     itemsSchema.parse(items);
 
     return (
         <View style={styles.toolbarContainer}>
             {/* Toolbar content */}            
             {items.map((item) => (
-                <TouchableOpacity key={item.command} onPress={() => { postMessageToWebApp({ action: ACTIONS.FORMAT_ELEMENT_EVENT_WEB, payload: { command: item.command } }) }} >
+                <TouchableOpacity key={item.command} onPress={() => { postMessageToWebApp(ref, { action: ACTIONS.FORMAT_ELEMENT_EVENT_WEB, payload: { command: item.command } }) }} >
                     <View style={styles.touchableBg}>
                         <FontAwesomeIcon
                             icon={item.icon}
@@ -67,7 +68,7 @@ export const Toolbar = ({items = DEFAULT_ITEMS}) => {
 const styles = StyleSheet.create({
     toolbarContainer: {
         flexDirection: "row",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         padding: 10,
         backgroundColor: "#f5f5f5",
         borderBottomWidth: 1,

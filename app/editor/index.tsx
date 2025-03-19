@@ -4,10 +4,11 @@ import { WebView } from "react-native-webview";
 import { useRef } from "react";
 import { KeyboardAwareScrollView, KeyboardProvider } from "react-native-keyboard-controller";
 import { Toolbar } from "../../components/Toolbar";
-import { webViewRef } from "../../components/EditorBridge";
+import { onMessageFromWebView } from "../../components/EditorBridge";
 
 const Editor = () => {
-  
+  const webViewRef = useRef<WebView | null>(null);
+
   return (
     <KeyboardProvider>
       <SafeAreaView style={styles.container}>
@@ -18,8 +19,9 @@ const Editor = () => {
             originWhitelist={['*']}
             style={styles.webView}
             source={{ html: htmlString }}
+            onMessage={onMessageFromWebView}
           />
-          <Toolbar />
+          <Toolbar ref={webViewRef} />
         </KeyboardAwareScrollView>
       </SafeAreaView>
     </KeyboardProvider>

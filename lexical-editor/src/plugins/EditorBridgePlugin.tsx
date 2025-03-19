@@ -8,7 +8,7 @@ import  {
     LexicalEditor,
     $getRoot
 } from 'lexical'
-import OnChangePayload from '../../../types/OnChangePayload';
+import { OnChangePayload } from '../../../types/OnChangePayload';
 
 export function onLexicalEditorChange(editorState: EditorState, _latestEditor: LexicalEditor, _tags: Set<string>) {
     editorState.read(() => {

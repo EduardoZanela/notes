@@ -1,15 +1,14 @@
-import { z } from "zod";
-import { getAllNotes } from "../services/NotesDBService";
-import OnChangePayload from "../types/OnChangePayload";
-import { ActionType, EventPaylod } from "../types/Events";
-import { useRef } from "react";
-import WebView from "react-native-webview";
+import { EventPaylod } from "../types/Events";
+import { MutableRefObject, useRef } from "react";
+import WebView, { WebViewMessageEvent } from "react-native-webview";
 
-const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
+//const FormatOptions = ['bold', 'underline', 'strikethrough', 'italic', 'highlight', 'code', 'subscript', 'superscript', 'lowercase', 'uppercase', 'capitalize'] as const;
 
-export const webViewRef = useRef<WebView | null>(null);
+export const onMessageFromWebView = (event: WebViewMessageEvent) => {
+  console.log("event ", event.nativeEvent.data);
+} 
 
-export const postMessageToWebApp = (payload: EventPaylod) => {
+export const postMessageToWebApp = (webViewRef: MutableRefObject<WebView | null>, payload: EventPaylod) => {
   webViewRef.current?.injectJavaScript(buildMessageJavaScript(payload));
 }
 
