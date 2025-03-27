@@ -18,17 +18,17 @@ export function Editor() {
     theme: EditorTheme,
     onError
   };
-
+  
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <div className="editor-container">
-        <EditorBridgePlugin />
         <div className="editor-inner">
           <RichTextPlugin
             contentEditable={<ContentEditable className="editor-input" />}
             placeholder={<div className="editor-placeholder">Enter some text...</div>}
             ErrorBoundary={LexicalErrorBoundary}
           />
+          <EditorBridgePlugin />
           <HistoryPlugin />
           <OnChangePlugin onChange={onLexicalEditorChange} />
         </div>

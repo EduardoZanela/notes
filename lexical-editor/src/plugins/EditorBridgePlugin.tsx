@@ -1,6 +1,5 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useRHHandler } from './Events'
-import { ACTIONS } from '../../../types/Events'
+import { ACTIONS, type ActionType } from '../../../types/Events'
 
 import  {
     FORMAT_TEXT_COMMAND,
@@ -9,6 +8,34 @@ import  {
     $getRoot
 } from 'lexical'
 import { OnChangePayload } from '../../../types/OnChangePayload';
+import EventEmitter from "events";
+import { useEffect } from "react";
+
+const RNEvents = new EventEmitter();
+
+export const registerRNHandler = (action: ActionType, handler: (payload: any) => void) => {
+    RNEvents.on(action, handler);
+    return () => { RNEvents.off(action, handler); };
+}
+
+export const useRHHandler = (action: ActionType, handler: (payload: any) => void) => {
+    useEffect(() => {
+        const deregister = registerRNHandler(action, handler);
+        return () => { deregister(); };
+    }, [action, handler]);
+}
+
+export const onEventMessageFromRN = (message: string) => {
+    let result;
+    try {
+        result = JSON.parse(message);
+    } catch(e) {
+        console.log(e);
+        return;
+    }
+    const { action, payload } = result;
+    RNEvents.emit(action, payload);
+}
 
 export function onLexicalEditorChange(editorState: EditorState, _latestEditor: LexicalEditor, _tags: Set<string>) {
     editorState.read(() => {
@@ -20,13 +47,13 @@ export function onLexicalEditorChange(editorState: EditorState, _latestEditor: L
             ...(titleText && { titleText }),
             ...(jsonState && { jsonState })
         };
-        window.ReactNativeWebView?.postMessage(ACTIONS.NOTIFY_STATE_CHANGE_RN, payload);
+        const message = JSON.stringify({ action: ACTIONS.NOTIFY_STATE_CHANGE_RN, payload });
+        window.ReactNativeWebView?.postMessage(message);
     });
 }
 
 export function EditorBridgePlugin() {
     const [editor] = useLexicalComposerContext();
-
     useRHHandler(ACTIONS.FORMAT_ELEMENT_EVENT_WEB, (payload) => {
         editor.dispatchCommand(FORMAT_TEXT_COMMAND, payload.command);
     });

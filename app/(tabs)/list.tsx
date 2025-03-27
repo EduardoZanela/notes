@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, FlatList, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { getAllNotes } from "../../services/NotesDBService";
+import Note from "../../models/Note";
+import { Card } from "react-native-paper";
 
 
 const generateRandomPastel = () => {
@@ -9,12 +12,15 @@ const generateRandomPastel = () => {
 
 
 const NotesList = () => {
-  
-  // const [notes, setNotes] = useState<Note[]>();
-  // getAllNotes().then((notes) => {
-  //   setNotes(notes);
-  // }
-  // );
+  const [notes, setNotes] = useState<Note[]>();
+
+  useEffect(() => {
+    getAllNotes().then((notes) => {
+      setNotes(notes);
+      
+    });
+  }, []);
+
   
   // const [menuVisible, setMenuVisible] = useState(null);
 
@@ -24,7 +30,7 @@ const NotesList = () => {
 
   return (
     <View style={styles.container}>
-      {/* <FlatList
+      {<FlatList
         data={notes}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
@@ -39,7 +45,7 @@ const NotesList = () => {
             </Card>
           );
         }}
-      /> */}
+      />}
     </View>
   );
 };
